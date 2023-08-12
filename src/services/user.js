@@ -1,5 +1,4 @@
 import userModel from '../models/sequelize/model/user.js';
-import { log4jsError } from '../utils/lo4js.js';
 
 export default {
   /**
@@ -10,17 +9,13 @@ export default {
    * @returns
    */
   findOneUser: async ({ where, attributes } = {}) => {
-    try {
-      const options = { where };
+    const options = { where };
 
-      if (attributes?.length) options.attributes = attributes;
+    if (attributes?.length) options.attributes = attributes;
 
-      const res = await userModel.findOne(options);
+    const res = await userModel.findOne(options);
 
-      return res?.dataValues || null;
-    } catch (error) {
-      log4jsError(error);
-    }
+    return res?.dataValues || null;
   },
 
   /**
@@ -28,16 +23,15 @@ export default {
    * @param {object} options
    * @param {string} options.username
    * @param {string} options.password
+   * @param {string} options.roleId
+   * @param {string} options.creatorUserId
+   * @param {string} options.updateUserId
    * @returns
    */
-  createUser: async ({ username, password }) => {
-    try {
-      const res = await userModel.create({ username, password });
+  createUser: async ({ username, password, roleId, creatorUserId, updateUserId }) => {
+    const res = await userModel.create({ username, password, roleId, creatorUserId, updateUserId });
 
-      return res.dataValues;
-    } catch (error) {
-      log4jsError(error);
-    }
+    return res.dataValues;
   },
 
   /**
@@ -48,10 +42,6 @@ export default {
    * @returns
    */
   updateUser: async ({ update, where }) => {
-    try {
-      return userModel.update(update, { where });
-    } catch (error) {
-      log4jsError(error);
-    }
+    return userModel.update(update, { where });
   },
 };

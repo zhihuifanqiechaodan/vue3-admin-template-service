@@ -23,13 +23,13 @@ export default {
           case 'TokenExpiredError':
             ctx.body = {
               code: 40101,
-              msg: 'Token expired',
+              message: 'Token expired',
             };
             break;
           case 'JsonWebTokenError':
             ctx.body = {
               code: 40102,
-              msg: 'Invalid token',
+              message: 'Invalid token',
             };
             break;
           default:

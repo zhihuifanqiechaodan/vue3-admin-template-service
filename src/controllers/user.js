@@ -1,6 +1,7 @@
 import { log4jsError } from '../utils/lo4js.js';
 import userServices from '../services/user.js';
 import jsonwebtoken from 'jsonwebtoken';
+import menuServices from '../services/menu.js';
 
 export default {
   /**
@@ -35,6 +36,7 @@ export default {
         code: 20000,
         data: {
           token: jsonwebtoken.sign(userInfo, process.env.JWT_SECRET, { expiresIn: '1d' }),
+          userInfo,
         },
       };
     } catch (error) {
@@ -58,6 +60,32 @@ export default {
       await userServices.updateUser({ where: { username }, update: { password } });
 
       ctx.body = { code: 20000, data: {}, messgae: '' };
+    } catch (error) {
+      ctx.app.emit('error', ctx);
+
+      log4jsError(error);
+    }
+  },
+
+  /**
+   * @method getMenuList
+   * @param {*} ctx
+   * @param {*} next
+   */
+  getMenuList: async (ctx) => {
+    try {
+      const { roleInfo } = ctx.request.body;
+
+      const { type } = roleInfo;
+
+      let menuList = [];
+
+      if (type === 1) {
+        menuList = await menuServices.findAllMenu({ where: { status: 1, deleteStatus: 0 } });
+      } else {
+      }
+
+      ctx.body = { code: 20000, data: { menuList }, messgae: '' };
     } catch (error) {
       ctx.app.emit('error', ctx);
 

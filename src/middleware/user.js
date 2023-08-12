@@ -2,6 +2,7 @@ import { log4jsError } from '../utils/lo4js.js';
 import joi from 'joi';
 import userServices from '../services/user.js';
 import bcrypt from 'bcryptjs';
+import roleServices from '../services/role.js';
 
 export default {
   /**
@@ -182,7 +183,7 @@ export default {
         if (!bcrypt.compareSync(password, userInfo.password)) {
           ctx.body = {
             code: 40301,
-            msg: 'Incorrect password',
+            message: 'Incorrect password',
           };
 
           return;
@@ -192,6 +193,60 @@ export default {
 
         log4jsError(error);
 
+        return;
+      }
+
+      await next();
+    },
+
+    /**
+     * @method validateUserStatus
+     * @param {*} ctx
+     * @param {*} next
+     */
+    validateUserStatus: async (ctx, next) => {
+      try {
+        const { userInfo } = ctx.request.body;
+
+        if (!userInfo.status || userInfo.deleteStatus) {
+          ctx.body = {
+            code: 40300,
+            message: '当前用户已经被禁用或删除',
+          };
+
+          return;
+        }
+      } catch (error) {
+        ctx.app.emit('error', ctx);
+
+        log4jsError(error);
+
+        return;
+      }
+
+      await next();
+    },
+  },
+
+  '/menu_list': {
+    /**
+     * @method getUserRole
+     * @param {*} ctx
+     * @param {*} next
+     */
+    getUserRole: async (ctx, next) => {
+      try {
+        const {
+          userInfo: { roleId },
+        } = ctx.request.body;
+
+        const roleInfo = await roleServices.findOneRole({ where: { id: roleId } });
+
+        ctx.request.body.roleInfo = roleInfo;
+      } catch (error) {
+        ctx.app.emit('error', ctx);
+
+        log4jsError(error);
         return;
       }
 

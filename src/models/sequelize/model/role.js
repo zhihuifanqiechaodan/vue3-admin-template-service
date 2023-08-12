@@ -1,24 +1,19 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../index.js';
 
-const User = sequelize.define(
-  'User',
+const Role = sequelize.define(
+  'Role',
   {
-    username: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
-      comment: '用户名称',
+      comment: '角色名称',
     },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      comment: '用户密码',
-    },
-    roleId: {
+    type: {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 0,
-      comment: '角色id, 0表示系统创建',
+      comment: '角色类型 0普通角色，1超级管理员',
     },
     status: {
       type: DataTypes.BOOLEAN,
@@ -36,18 +31,17 @@ const User = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 0,
-      comment: '创建用户id, 0表示系统创建',
+      comment: '创建用户id',
     },
     updateUserId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      defaultValue: 0,
       comment: '更新用户id',
     },
   },
-  { tableName: 'user' }
+  { tableName: 'role' }
 );
 
-User.sync({ alter: true });
+Role.sync({ alter: true });
 
-export default User;
+export default Role;

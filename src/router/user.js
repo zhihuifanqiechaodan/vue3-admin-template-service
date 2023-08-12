@@ -19,8 +19,10 @@ router
     userMiddleware['/login'].validateField,
     userMiddleware['/login'].isUserExist,
     userMiddleware['/login'].validatePassword,
+    userMiddleware['/login'].validateUserStatus,
     userControllers.login
   )
-  .patch('/change_password', authMiddleware.auth, userMiddleware.crpytPassword, userControllers.changePassword);
+  .patch('/change_password', authMiddleware.auth, userMiddleware.crpytPassword, userControllers.changePassword)
+  .get('/menu_list', authMiddleware.auth, userMiddleware['/menu_list'].getUserRole, userControllers.getMenuList);
 
 export default router;
