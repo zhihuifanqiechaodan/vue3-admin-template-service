@@ -39,6 +39,7 @@ export default {
 
             break;
         }
+        return;
       }
     } catch (error) {
       ctx.app.emit('error', ctx);

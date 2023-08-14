@@ -13,32 +13,34 @@ export default {
      */
     validateField: async (ctx, next) => {
       try {
-        const { type, layout, title, icon, hidden, alwaysShow, noCache, breadcrumb, path, parentId } = ctx.request.body;
+        const { type, hidden, alwaysShow, title, icon, path, noCache, affix, breadcrumb, activeMenu } =
+          ctx.request.body;
 
         const schema = joi.object({
           type: joi.number().required(),
-          layout: joi.string(),
-          title: joi.string().required(),
-          icon: joi.string().required(),
           hidden: joi.boolean().required(),
           alwaysShow: joi.boolean(),
-          noCache: joi.boolean().required(),
-          breadcrumb: joi.boolean().required(),
+          title: joi.string().required(),
           path: joi.string(),
+          icon: joi.string().required(),
+          noCache: joi.boolean(),
+          affix: joi.boolean(),
+          breadcrumb: joi.boolean(),
+          activeMenu: joi.string(),
           parentId: joi.number(),
         });
 
         const result = schema.validate({
           type,
-          layout,
-          title,
-          icon,
           hidden,
           alwaysShow,
-          noCache,
-          breadcrumb,
+          title,
+          icon,
           path,
-          parentId,
+          noCache,
+          affix,
+          breadcrumb,
+          activeMenu,
         });
 
         if (result.error) {

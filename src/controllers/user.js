@@ -81,7 +81,7 @@ export default {
       let menuList = [];
 
       if (type === 1) {
-        menuList = await menuServices.findAllMenu({ where: { status: 1, deleteStatus: 0 } });
+        menuList = await menuServices.findAllMenu({ where: { hidden: false, deleteStatus: 0 } });
       } else {
       }
 
