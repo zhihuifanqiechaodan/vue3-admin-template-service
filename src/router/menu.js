@@ -6,12 +6,20 @@ import authMiddleware from '../middleware/auth.js';
 
 const router = new koaRouter({ prefix: '/menu' });
 
-router.post(
-  '/create',
-  authMiddleware.auth,
-  menuMiddleware['/create'].validateField,
-  menuMiddleware['/create'].isMenuExist,
-  menuControllers.createMenu
-);
+router
+  .post(
+    '/create',
+    authMiddleware.auth,
+    menuMiddleware['/create'].validateField,
+    menuMiddleware['/create'].isMenuExist,
+    menuControllers.createMenu
+  )
+  .get('/list', authMiddleware.auth, authMiddleware.getUserRole, menuControllers.getMenuList)
+  .post(
+    '/update_sort',
+    authMiddleware.auth,
+    menuMiddleware['/update_sort'].validateField,
+    menuControllers.updateMenuSort
+  );
 
 export default router;

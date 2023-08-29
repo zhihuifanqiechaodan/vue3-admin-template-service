@@ -23,6 +23,6 @@ router
     userControllers.login
   )
   .patch('/change_password', authMiddleware.auth, userMiddleware.crpytPassword, userControllers.changePassword)
-  .get('/menu_list', authMiddleware.auth, userMiddleware['/menu_list'].getUserRole, userControllers.getMenuList);
+  .get('/menu_list', authMiddleware.auth, authMiddleware.getUserRole, userControllers.getMenuList);
 
 export default router;

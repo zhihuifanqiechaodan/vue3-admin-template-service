@@ -10,6 +10,12 @@ const Menu = sequelize.define(
       defaultValue: 0,
       comment: '菜单类型 0目录，1菜单',
     },
+    layout: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: '',
+      comment: '布局路由名称',
+    },
     hidden: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
@@ -63,6 +69,12 @@ const Menu = sequelize.define(
       allowNull: false,
       defaultValue: '',
       comment: '如果设置了path，侧边栏会高亮显示你设置的路径',
+    },
+    sortIndex: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0,
+      comment: '排序',
     },
     parentId: {
       type: DataTypes.INTEGER,

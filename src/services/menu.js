@@ -20,6 +20,7 @@ export default {
    */
   createMenu: async ({
     type,
+    layout,
     hidden,
     alwaysShow,
     title,
@@ -34,6 +35,7 @@ export default {
   }) => {
     const res = await menuModel.create({
       type,
+      layout,
       hidden,
       alwaysShow,
       title,

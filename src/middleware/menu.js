@@ -13,35 +13,54 @@ export default {
      */
     validateField: async (ctx, next) => {
       try {
-        const { type, hidden, alwaysShow, title, icon, path, noCache, affix, breadcrumb, activeMenu } =
+        const { type, layout, hidden, alwaysShow, title, icon, path, noCache, affix, breadcrumb, activeMenu } =
           ctx.request.body;
 
-        const schema = joi.object({
-          type: joi.number().required(),
-          hidden: joi.boolean().required(),
-          alwaysShow: joi.boolean(),
-          title: joi.string().required(),
-          path: joi.string(),
-          icon: joi.string().required(),
-          noCache: joi.boolean(),
-          affix: joi.boolean(),
-          breadcrumb: joi.boolean(),
-          activeMenu: joi.string(),
-          parentId: joi.number(),
-        });
+        var result;
 
-        const result = schema.validate({
-          type,
-          hidden,
-          alwaysShow,
-          title,
-          icon,
-          path,
-          noCache,
-          affix,
-          breadcrumb,
-          activeMenu,
-        });
+        if (type === 0) {
+          result = joi
+            .object({
+              type: joi.number().required(),
+              layout: joi.string().required(),
+              hidden: joi.boolean().required(),
+              alwaysShow: joi.boolean().required(),
+              title: joi.string().required(),
+              icon: joi.string().required(),
+            })
+            .validate({
+              type,
+              layout,
+              hidden,
+              alwaysShow,
+              title,
+              icon,
+            });
+        } else if (type === 1) {
+          result = joi
+            .object({
+              type: joi.number().required(),
+              hidden: joi.boolean().required(),
+              title: joi.string().required(),
+              path: joi.string().required(),
+              icon: joi.string().required(),
+              noCache: joi.boolean().required(),
+              affix: joi.boolean().required(),
+              breadcrumb: joi.boolean().required(),
+              activeMenu: joi.string().allow('').required(),
+            })
+            .validate({
+              type,
+              hidden,
+              title,
+              path,
+              icon,
+              noCache,
+              affix,
+              breadcrumb,
+              activeMenu,
+            });
+        }
 
         if (result.error) {
           ctx.body = {
@@ -70,12 +89,62 @@ export default {
       try {
         const { path, title } = ctx.request.body;
 
-        if (await menuServices.findOneMenu({ where: { [Op.or]: [{ path }, { title }] } })) {
+        const opOr = [];
+
+        path && opOr.push({ path });
+
+        title && opOr.push({ title });
+
+        if (await menuServices.findOneMenu({ where: { [Op.or]: opOr } })) {
           ctx.body = {
             code: 40900,
             message: `path or title already exists`,
           };
 
+          return;
+        }
+      } catch (error) {
+        ctx.app.emit('error', ctx);
+
+        log4jsError(error);
+
+        return;
+      }
+
+      await next();
+    },
+  },
+  '/update_sort': {
+    /**
+     * @method validateField
+     * @param {*} ctx
+     * @param {*} next
+     * @returns
+     */
+    validateField: async (ctx, next) => {
+      try {
+        const { menuList } = ctx.request.body;
+
+        const { error } = joi
+          .array()
+          .items(
+            joi.object({
+              id: joi.number().required(),
+              sortIndex: joi.number().required(),
+              parentId: joi.number().required(),
+            })
+          )
+          .validate(
+            menuList.map((item) => {
+              return { id: item.id, sortIndex: item.sortIndex, parentId: item.parentId };
+            })
+          );
+
+        if (error) {
+          ctx.body = {
+            code: 40000,
+            message: error.message,
+          };
           return;
         }
       } catch (error) {
