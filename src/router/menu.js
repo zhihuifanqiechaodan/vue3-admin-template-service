@@ -20,6 +20,13 @@ router
     authMiddleware.auth,
     menuMiddleware['/update_sort'].validateField,
     menuControllers.updateMenuSort
+  )
+  .post(
+    '/update',
+    authMiddleware.auth,
+    menuMiddleware['/update'].validateField,
+    menuMiddleware['/update'].isMenuExist,
+    menuControllers.updateMenu
   );
 
 export default router;

@@ -158,4 +158,118 @@ export default {
       await next();
     },
   },
+  '/update': {
+    /**
+     * @method validateField
+     * @param {*} ctx
+     * @param {*} next
+     * @returns
+     */
+    validateField: async (ctx, next) => {
+      try {
+        const { id, type, layout, hidden, alwaysShow, title, icon, path, noCache, affix, breadcrumb, activeMenu } =
+          ctx.request.body;
+
+        let error;
+
+        if (type === 0) {
+          error = joi
+            .object({
+              id: joi.number().required(),
+              type: joi.number().required(),
+              layout: joi.string().required(),
+              hidden: joi.boolean().required(),
+              alwaysShow: joi.boolean().required(),
+              title: joi.string().required(),
+              icon: joi.string().required(),
+            })
+            .validate({
+              id,
+              type,
+              layout,
+              hidden,
+              alwaysShow,
+              title,
+              icon,
+            }).error;
+        } else if (type === 1) {
+          joi
+            .object({
+              id: joi.number().required(),
+              type: joi.number().required(),
+              hidden: joi.boolean().required(),
+              title: joi.string().required(),
+              path: joi.string().required(),
+              icon: joi.string().required(),
+              noCache: joi.boolean().required(),
+              affix: joi.boolean().required(),
+              breadcrumb: joi.boolean().required(),
+              activeMenu: joi.string().allow('').required(),
+            })
+            .validate({
+              id,
+              type,
+              hidden,
+              title,
+              path,
+              icon,
+              noCache,
+              affix,
+              breadcrumb,
+              activeMenu,
+            }).error;
+        }
+
+        if (error) {
+          ctx.body = {
+            code: 40000,
+            message: error.message,
+          };
+          return;
+        }
+      } catch (error) {
+        ctx.app.emit('error', ctx);
+
+        log4jsError(error);
+
+        return;
+      }
+
+      await next();
+    },
+
+    /**
+     * @method isUserExist
+     * @param {*} ctx
+     * @param {*} next
+     */
+    isMenuExist: async (ctx, next) => {
+      try {
+        const { id, path, title } = ctx.request.body;
+
+        const opOr = [];
+
+        path && opOr.push({ path });
+
+        title && opOr.push({ title });
+
+        if (await menuServices.findOneMenu({ where: { [Op.or]: opOr, id: { [Op.ne]: id } } })) {
+          ctx.body = {
+            code: 40900,
+            message: `path or title already exists`,
+          };
+
+          return;
+        }
+      } catch (error) {
+        ctx.app.emit('error', ctx);
+
+        log4jsError(error);
+
+        return;
+      }
+
+      await next();
+    },
+  },
 };

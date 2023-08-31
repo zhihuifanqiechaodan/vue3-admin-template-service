@@ -99,4 +99,50 @@ export default {
       log4jsError(error);
     }
   },
+
+  /**
+   * @method updateMenu
+   * @param {*} ctx
+   * @param {*} next
+   */
+  updateMenu: async (ctx) => {
+    try {
+      const { id, type, layout, hidden, alwaysShow, title, icon, path, noCache, affix, breadcrumb, activeMenu } =
+        ctx.request.body;
+
+      let update;
+
+      if (type === 0) {
+        update = {
+          layout,
+          hidden,
+          alwaysShow,
+          title,
+          icon,
+        };
+      } else if (type === 1) {
+        update = {
+          hidden,
+          title,
+          path,
+          icon,
+          noCache,
+          affix,
+          breadcrumb,
+          activeMenu,
+        };
+      }
+
+      await menuServices.updateMenu({
+        update,
+        where: { id },
+      });
+
+      ctx.body = { code: 20000, data: {}, message: '' };
+    } catch (error) {
+      ctx.app.emit('error', ctx);
+
+      log4jsError(error);
+    }
+  },
 };

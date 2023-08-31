@@ -22,7 +22,7 @@ app
       origin: (ctx) => {
         const requestOrigin = ctx.request.header.origin;
 
-        const allowedOriginPattern = /^https?:\/\/localhost(:\d+)?$/;
+        const allowedOriginPattern = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/;
 
         if (allowedOriginPattern.test(requestOrigin)) {
           return requestOrigin;
