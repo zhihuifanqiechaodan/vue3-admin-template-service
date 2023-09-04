@@ -13,7 +13,7 @@ export default {
      */
     validateField: async (ctx, next) => {
       try {
-        const { type, layout, hidden, alwaysShow, title, icon, path, noCache, affix, breadcrumb, activeMenu } =
+        const { type, layout, hidden, alwaysShow, title, icon, path, noCache, affix, breadcrumb, activeMenu, isAuth } =
           ctx.request.body;
 
         var result;
@@ -27,6 +27,7 @@ export default {
               alwaysShow: joi.boolean().required(),
               title: joi.string().required(),
               icon: joi.string().required(),
+              isAuth: joi.boolean().required(),
             })
             .validate({
               type,
@@ -35,6 +36,7 @@ export default {
               alwaysShow,
               title,
               icon,
+              isAuth,
             });
         } else if (type === 1) {
           result = joi
@@ -48,6 +50,7 @@ export default {
               affix: joi.boolean().required(),
               breadcrumb: joi.boolean().required(),
               activeMenu: joi.string().allow('').required(),
+              isAuth: joi.boolean().required(),
             })
             .validate({
               type,
@@ -59,6 +62,7 @@ export default {
               affix,
               breadcrumb,
               activeMenu,
+              isAuth,
             });
         }
 
@@ -167,8 +171,21 @@ export default {
      */
     validateField: async (ctx, next) => {
       try {
-        const { id, type, layout, hidden, alwaysShow, title, icon, path, noCache, affix, breadcrumb, activeMenu } =
-          ctx.request.body;
+        const {
+          id,
+          type,
+          layout,
+          hidden,
+          alwaysShow,
+          title,
+          icon,
+          path,
+          noCache,
+          affix,
+          breadcrumb,
+          activeMenu,
+          isAuth,
+        } = ctx.request.body;
 
         let error;
 
@@ -182,6 +199,7 @@ export default {
               alwaysShow: joi.boolean().required(),
               title: joi.string().required(),
               icon: joi.string().required(),
+              isAuth: joi.boolean().required(),
             })
             .validate({
               id,
@@ -191,6 +209,7 @@ export default {
               alwaysShow,
               title,
               icon,
+              isAuth,
             }).error;
         } else if (type === 1) {
           joi
@@ -205,6 +224,7 @@ export default {
               affix: joi.boolean().required(),
               breadcrumb: joi.boolean().required(),
               activeMenu: joi.string().allow('').required(),
+              isAuth: joi.boolean().required(),
             })
             .validate({
               id,
@@ -217,6 +237,7 @@ export default {
               affix,
               breadcrumb,
               activeMenu,
+              isAuth,
             }).error;
         }
 

@@ -20,6 +20,7 @@ specifiers:
   mysql2: ^3.6.0
   prettier: ^3.0.1
   sequelize: ^6.32.1
+  uuid: ^9.0.0
 
 dependencies:
   bcryptjs: registry.npmmirror.com/bcryptjs/2.4.3
@@ -37,6 +38,7 @@ dependencies:
   log4js: registry.npmmirror.com/log4js/6.9.1
   mysql2: registry.npmmirror.com/mysql2/3.6.0
   sequelize: registry.npmmirror.com/sequelize/6.32.1_mysql2@3.6.0
+  uuid: registry.npmmirror.com/uuid/9.0.0
 
 devDependencies:
   eslint: registry.npmmirror.com/eslint/8.46.0
@@ -2574,6 +2576,13 @@ packages:
     resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/uuid/-/uuid-8.3.2.tgz}
     name: uuid
     version: 8.3.2
+    hasBin: true
+    dev: false
+
+  registry.npmmirror.com/uuid/9.0.0:
+    resolution: {integrity: sha512-MXcSTerfPa4uqyzStbRoTgt5XIe3x5+42+q1sDuy3R5MDk66URdLMOZe5aPX/SQd+kuYAh0FdP/pO28IkQyTeg==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/uuid/-/uuid-9.0.0.tgz}
+    name: uuid
+    version: 9.0.0
     hasBin: true
     dev: false
 

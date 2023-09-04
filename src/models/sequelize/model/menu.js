@@ -16,6 +16,18 @@ const Menu = sequelize.define(
       defaultValue: '',
       comment: '布局路由名称',
     },
+    isAuth: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true,
+      comment: '当设置为false时，将不认证权限直接返回当前菜单或目录',
+    },
+    cataloguePath: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: '',
+      comment: '目录路径',
+    },
     hidden: {
       type: DataTypes.BOOLEAN,
       allowNull: false,

@@ -7,22 +7,32 @@ const RoleMenu = sequelize.define(
     roleId: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      defaultValue: 0,
       comment: '角色id',
     },
-    menuId: {
+    menuIds: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      defaultValue: 0,
       comment: '菜单id',
     },
-    creatorId: {
-      type: DataTypes.INTEGER,
+    deleteStatus: {
+      type: DataTypes.BOOLEAN,
       allowNull: false,
-      comment: '创建者id',
+      defaultValue: false,
+      comment: '删除状态',
     },
-    updateId: {
+    creatorUserId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      comment: '创建者id',
+      defaultValue: 0,
+      comment: '创建用户id',
+    },
+    updateUserId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0,
+      comment: '更新用户id',
     },
   },
   { tableName: 'role_menu' }

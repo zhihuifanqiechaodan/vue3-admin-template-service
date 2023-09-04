@@ -1,5 +1,6 @@
 import { log4jsError } from '../utils/lo4js.js';
 import menuServices from '../services/menu.js';
+import { v4 as uuidv4 } from 'uuid';
 
 export default {
   /**
@@ -38,6 +39,7 @@ export default {
         activeMenu,
         creatorUserId: id,
         updateUserId: id,
+        cataloguePath: uuidv4(),
       });
 
       ctx.body = { code: 20000, data: {}, message: '' };
@@ -107,8 +109,21 @@ export default {
    */
   updateMenu: async (ctx) => {
     try {
-      const { id, type, layout, hidden, alwaysShow, title, icon, path, noCache, affix, breadcrumb, activeMenu } =
-        ctx.request.body;
+      const {
+        id,
+        type,
+        layout,
+        hidden,
+        alwaysShow,
+        title,
+        icon,
+        path,
+        noCache,
+        affix,
+        breadcrumb,
+        activeMenu,
+        isAuth,
+      } = ctx.request.body;
 
       let update;
 
@@ -119,6 +134,7 @@ export default {
           alwaysShow,
           title,
           icon,
+          isAuth,
         };
       } else if (type === 1) {
         update = {
@@ -130,6 +146,7 @@ export default {
           affix,
           breadcrumb,
           activeMenu,
+          isAuth,
         };
       }
 

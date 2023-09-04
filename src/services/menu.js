@@ -3,51 +3,11 @@ import menuModel from '../models/sequelize/model/menu.js';
 export default {
   /**
    * @method createRole
-   * @param {object} options
-   * @param {number} options.type
-   * @param {number} options.layout
-   * @param {string} options.title
-   * @param {string} options.icon
-   * @param {boolean} options.hidden
-   * @param {boolean} options.alwaysShow
-   * @param {boolean} options.noCache
-   * @param {boolean} options.breadcrumb
-   * @param {string} options.path
-   * @param {string} options.parentId
-   * @param {string} options.creatorId
-   * @param {string} options.updateId
+   * @param {object} data
    * @returns
    */
-  createMenu: async ({
-    type,
-    layout,
-    hidden,
-    alwaysShow,
-    title,
-    icon,
-    path,
-    noCache,
-    affix,
-    breadcrumb,
-    activeMenu,
-    creatorUserId,
-    updateUserId,
-  }) => {
-    const res = await menuModel.create({
-      type,
-      layout,
-      hidden,
-      alwaysShow,
-      title,
-      icon,
-      path,
-      noCache,
-      affix,
-      breadcrumb,
-      activeMenu,
-      creatorUserId,
-      updateUserId,
-    });
+  createMenu: async (data) => {
+    const res = await menuModel.create(data);
 
     return res.dataValues;
   },
