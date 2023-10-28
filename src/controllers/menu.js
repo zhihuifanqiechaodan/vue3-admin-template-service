@@ -22,10 +22,11 @@ export default {
         affix,
         breadcrumb,
         activeMenu,
+        buttonPermissions = [],
         userInfo: { id },
       } = ctx.request.body;
 
-      await menuServices.createMenu({
+      const res = await menuServices.createMenu({
         type,
         layout,
         hidden,
@@ -38,37 +39,24 @@ export default {
         breadcrumb,
         activeMenu,
         creatorUserId: id,
-        updateUserId: id,
         cataloguePath: uuidv4(),
       });
 
-      ctx.body = { code: 20000, data: {}, message: '' };
-    } catch (error) {
-      ctx.app.emit('error', ctx);
-
-      log4jsError(error);
-    }
-  },
-
-  /**
-   * @method getMenuList
-   * @param {*} ctx
-   * @param {*} next
-   */
-  getMenuList: async (ctx) => {
-    try {
-      const { roleInfo } = ctx.request.body;
-
-      const { type } = roleInfo;
-
-      let menuList = [];
-
-      if (type === 1) {
-        menuList = await menuServices.findAllMenu({ where: { deleteStatus: 0 } });
-      } else {
+      if (buttonPermissions.length) {
+        await menuServices.bulkCreate(
+          buttonPermissions.map((item) => {
+            return {
+              type: 2,
+              title: item.label,
+              buttonId: item.value,
+              parentId: res.id,
+              creatorUserId: id,
+            };
+          })
+        );
       }
 
-      ctx.body = { code: 20000, data: { menuList }, messgae: '' };
+      ctx.body = { code: 20000, data: {}, message: '' };
     } catch (error) {
       ctx.app.emit('error', ctx);
 
@@ -123,9 +111,12 @@ export default {
         breadcrumb,
         activeMenu,
         isAuth,
+        buttonIds,
       } = ctx.request.body;
 
       let update;
+
+      let buttonIdsToString = buttonIds.join(',');
 
       if (type === 0) {
         update = {
@@ -147,6 +138,7 @@ export default {
           breadcrumb,
           activeMenu,
           isAuth,
+          buttonIds: buttonIdsToString,
         };
       }
 

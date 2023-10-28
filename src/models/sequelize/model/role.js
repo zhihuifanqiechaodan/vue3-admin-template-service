@@ -37,6 +37,7 @@ const Role = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
       comment: '更新用户id',
+      defaultValue: 0,
     },
   },
   { tableName: 'role' }

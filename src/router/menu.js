@@ -1,8 +1,9 @@
 import koaRouter from 'koa-router';
 
 import menuMiddleware from '../middleware/menu.js';
-import menuControllers from '../controllers/menu.js';
 import authMiddleware from '../middleware/auth.js';
+import menuControllers from '../controllers/menu.js';
+import commonControllers from '../controllers/common.js';
 
 const router = new koaRouter({ prefix: '/menu' });
 
@@ -14,7 +15,7 @@ router
     menuMiddleware['/create'].isMenuExist,
     menuControllers.createMenu
   )
-  .get('/list', authMiddleware.auth, authMiddleware.getUserRole, menuControllers.getMenuList)
+  .get('/list', authMiddleware.auth, authMiddleware.getUserRole, commonControllers.getRoleMenuList)
   .post(
     '/update_sort',
     authMiddleware.auth,

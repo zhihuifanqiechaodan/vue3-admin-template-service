@@ -26,7 +26,6 @@ export default {
           name: '超级管理员',
           type: 1,
           creatorUserId: id,
-          updateUserId: id,
         });
 
         await userServices.updateUser({ where: { username }, update: { roleId } });

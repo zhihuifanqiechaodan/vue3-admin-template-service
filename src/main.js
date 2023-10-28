@@ -24,7 +24,7 @@ app
 
         const allowedOriginPattern = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/;
 
-        if (allowedOriginPattern.test(requestOrigin)) {
+        if (allowedOriginPattern.test(requestOrigin) || requestOrigin.includes('http://192.168.0.115')) {
           return requestOrigin;
         }
 

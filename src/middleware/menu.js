@@ -13,8 +13,21 @@ export default {
      */
     validateField: async (ctx, next) => {
       try {
-        const { type, layout, hidden, alwaysShow, title, icon, path, noCache, affix, breadcrumb, activeMenu, isAuth } =
-          ctx.request.body;
+        const {
+          type,
+          layout,
+          hidden,
+          alwaysShow,
+          title,
+          icon,
+          path,
+          noCache,
+          affix,
+          breadcrumb,
+          activeMenu,
+          isAuth,
+          buttonPermissions = [],
+        } = ctx.request.body;
 
         var result;
 
@@ -51,6 +64,15 @@ export default {
               breadcrumb: joi.boolean().required(),
               activeMenu: joi.string().allow('').required(),
               isAuth: joi.boolean().required(),
+              buttonPermissions: joi
+                .array()
+                .items(
+                  joi.object({
+                    label: joi.string().required(),
+                    value: joi.number().required(),
+                  })
+                )
+                .empty(),
             })
             .validate({
               type,
@@ -63,6 +85,7 @@ export default {
               breadcrumb,
               activeMenu,
               isAuth,
+              buttonPermissions,
             });
         }
 
@@ -185,6 +208,7 @@ export default {
           breadcrumb,
           activeMenu,
           isAuth,
+          buttonPermissions = [],
         } = ctx.request.body;
 
         let error;
@@ -225,6 +249,15 @@ export default {
               breadcrumb: joi.boolean().required(),
               activeMenu: joi.string().allow('').required(),
               isAuth: joi.boolean().required(),
+              buttonPermissions: joi
+                .array()
+                .items(
+                  joi.object({
+                    label: joi.string().required(),
+                    value: joi.number().required(),
+                  })
+                )
+                .empty(),
             })
             .validate({
               id,
@@ -238,6 +271,7 @@ export default {
               breadcrumb,
               activeMenu,
               isAuth,
+              buttonPermissions,
             }).error;
         }
 

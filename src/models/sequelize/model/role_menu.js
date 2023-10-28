@@ -10,7 +10,7 @@ const RoleMenu = sequelize.define(
       defaultValue: 0,
       comment: '角色id',
     },
-    menuIds: {
+    menuId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 0,

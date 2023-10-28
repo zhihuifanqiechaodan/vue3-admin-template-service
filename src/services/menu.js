@@ -56,4 +56,15 @@ export default {
 
     return res.map((item) => item.dataValues);
   },
+
+  /**
+   * @method bulkCreate
+   * @param {object} data
+   * @returns
+   */
+  bulkCreate: async (data) => {
+    const res = await menuModel.bulkCreate(data);
+
+    return res.map((item) => item.dataValues);
+  },
 };

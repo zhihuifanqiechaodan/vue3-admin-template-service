@@ -21,14 +21,10 @@ export default {
   /**
    * @method createRole
    * @param {object} options
-   * @param {string} options.name
-   * @param {string} options.type
-   * @param {string} options.creatorUserId
-   * @param {string} options.updateUserId
    * @returns
    */
-  createRole: async ({ name, type, creatorUserId, updateUserId }) => {
-    const res = await roleModel.create({ name, type, creatorUserId, updateUserId });
+  createRole: async (options) => {
+    const res = await roleModel.create(options);
 
     return res.dataValues;
   },
@@ -42,5 +38,16 @@ export default {
    */
   updateRole: async ({ update, where }) => {
     return roleModel.update(update, { where });
+  },
+
+  /**
+   * @method findAll
+   * @param {object} options
+   * @returns
+   */
+  findAll: async (options) => {
+    const res = await roleModel.findAll(options);
+
+    return res.map((item) => item.dataValues);
   },
 };

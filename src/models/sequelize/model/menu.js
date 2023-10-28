@@ -8,7 +8,7 @@ const Menu = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 0,
-      comment: '菜单类型 0目录，1菜单',
+      comment: '菜单类型 0目录，1菜单，2按钮',
     },
     layout: {
       type: DataTypes.STRING,
@@ -44,7 +44,7 @@ const Menu = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
       defaultValue: '',
-      comment: '目录或菜单名称',
+      comment: '目录 ｜ 菜单 | 按钮名称',
     },
     path: {
       type: DataTypes.STRING,
@@ -92,7 +92,13 @@ const Menu = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 0,
-      comment: '上级菜单或目录id',
+      comment: '目录id',
+    },
+    buttonId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: -1,
+      comment: '按钮id',
     },
     deleteStatus: {
       type: DataTypes.BOOLEAN,
