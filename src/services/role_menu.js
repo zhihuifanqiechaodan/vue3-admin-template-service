@@ -28,9 +28,9 @@ export default {
    * @param {object} data
    * @returns
    */
-  findAll: async (data) => {
-    const res = await roleMenuModel.findAll(data);
-
+  findAll: async ({ where } = {}) => {
+    const options = { where };
+    const res = await roleMenuModel.findAll(options);
     return res.map((item) => item.dataValues);
   },
 };

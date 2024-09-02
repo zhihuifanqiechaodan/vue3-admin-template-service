@@ -20,15 +20,15 @@ app
   .use(
     koa2Cors({
       origin: (ctx) => {
-        const requestOrigin = ctx.request.header.origin;
-
+        const requestOrigin = ctx.request.origin;
+        const localhost = 'http://10.1.4.16';
         const allowedOriginPattern = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/;
-
-        if (allowedOriginPattern.test(requestOrigin) || requestOrigin.includes('http://192.168.0.115')) {
+        const whiteList = ['https://example1.com', 'https://example2.com'];
+        if (allowedOriginPattern.test(requestOrigin) || whiteList.includes(requestOrigin)) {
           return requestOrigin;
         }
 
-        return false;
+        return localhost;
       },
       credentials: true,
     })

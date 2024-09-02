@@ -14,31 +14,25 @@ const User = sequelize.define(
       allowNull: false,
       comment: '用户密码',
     },
-    roleId: {
+    role_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 0,
-      comment: '角色id, 0表示系统创建',
+      comment: '角色id',
     },
     status: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: true,
-      comment: '状态',
+      comment: '用户状态 1：正常 0：禁用',
     },
-    deleteStatus: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: false,
-      comment: '删除状态',
-    },
-    creatorUserId: {
+    creator_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 0,
-      comment: '创建用户id, 0表示系统创建',
+      comment: '创建用户id',
     },
-    updateUserId: {
+    update_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 0,

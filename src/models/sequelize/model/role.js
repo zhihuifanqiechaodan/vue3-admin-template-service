@@ -21,19 +21,13 @@ const Role = sequelize.define(
       defaultValue: true,
       comment: '状态',
     },
-    deleteStatus: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: false,
-      comment: '删除状态',
-    },
-    creatorUserId: {
+    creator_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 0,
       comment: '创建用户id',
     },
-    updateUserId: {
+    update_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       comment: '更新用户id',

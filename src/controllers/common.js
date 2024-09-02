@@ -17,7 +17,6 @@ export default {
 
       if (type === 1) {
         menuList = await menuServices.findAllMenu({ where: { deleteStatus: 0 } });
-      } else {
       }
 
       ctx.body = { code: 20000, data: { menuList }, messgae: '' };

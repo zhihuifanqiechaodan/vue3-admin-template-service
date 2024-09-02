@@ -207,10 +207,10 @@ export default {
       try {
         const { userInfo } = ctx.request.body;
 
-        if (!userInfo.status || userInfo.deleteStatus) {
+        if (!userInfo.status) {
           ctx.body = {
             code: 40300,
-            message: '当前用户已经被禁用或删除',
+            message: '当前用户已经被禁用',
           };
 
           return;

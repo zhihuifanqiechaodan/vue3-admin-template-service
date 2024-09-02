@@ -25,7 +25,7 @@ export default {
         const { id: roleId } = await roleServices.createRole({
           name: '超级管理员',
           type: 1,
-          creatorUserId: id,
+          creator_id: id,
         });
 
         await userServices.updateUser({ where: { username }, update: { roleId } });

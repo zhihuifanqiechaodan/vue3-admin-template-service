@@ -6,7 +6,6 @@ export default {
   /**
    * @method createMenu
    * @param {*} ctx
-   * @param {*} next
    */
   createMenu: async (ctx) => {
     try {

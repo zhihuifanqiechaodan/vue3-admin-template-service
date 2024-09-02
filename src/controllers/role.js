@@ -4,19 +4,15 @@ import roleMenuServices from '../services/role_menu.js';
 
 export default {
   /**
-   * @method getRoleList
+   * @method roleList
    * @param {*} ctx
    * @param {*} next
    */
-  getRoleList: async (ctx) => {
+  roleList: async (ctx) => {
     try {
-      const roleList = await roleServices.findAll({
-        where: {
-          deleteStatus: 0,
-        },
-      });
+      const roleList = await roleServices.findAll();
 
-      ctx.body = { code: 20000, data: { roleList }, message: '' };
+      ctx.body = { code: 20000, data: { roleList } };
     } catch (error) {
       ctx.app.emit('error', ctx);
 
@@ -28,26 +24,44 @@ export default {
    * @param {*} ctx
    * @param {*} next
    */
-  createRole: async (ctx) => {
+  createRole: async (ctx, next) => {
     try {
-      const { userInfo, name, roles } = ctx.request.body;
+      const { userInfo, name } = ctx.request.body;
 
       const res = await roleServices.createRole({
         name,
-        creatorUserId: userInfo.id,
+        creator_id: userInfo.id,
       });
 
-      await roleMenuServices.bulkCreate(
-        roles.map((item) => {
-          return {
-            roleId: res.id,
-            menuId: item,
-            creatorUserId: userInfo.id,
-          };
-        })
-      );
+      ctx.request.body.role_id = res.id;
 
-      ctx.body = { code: 20000, data: {}, message: '' };
+      await next();
+    } catch (error) {
+      ctx.app.emit('error', ctx);
+
+      log4jsError(error);
+    }
+  },
+  /**
+   * @method createRole
+   * @param {*} ctx
+   */
+  createRoleMenus: async (ctx) => {
+    try {
+      const { userInfo, menuIds, role_id } = ctx.request.body;
+      if (menuIds.length) {
+        await roleMenuServices.bulkCreate(
+          menuIds.map((item) => {
+            return {
+              role_id,
+              menu_id: item,
+              creator_id: userInfo.id,
+            };
+          })
+        );
+      }
+
+      ctx.body = { code: 20000 };
     } catch (error) {
       ctx.app.emit('error', ctx);
 
@@ -61,22 +75,13 @@ export default {
    */
   getRuleInfo: async (ctx) => {
     try {
-      const { id } = ctx.request.query;
-
-      const res = await roleServices.findOneRole({
-        where: {
-          id,
-        },
-      });
-
-      const roles = await roleMenuServices.findAll({ where: { roleId: id } });
-
-      res.roles = roles.map((item) => item.id);
-
-      ctx.body = { code: 20000, data: { ruleInfo: res }, message: '' };
+      const { role_id } = ctx.request.body;
+      const ruleInfo = await roleServices.findOne({ where: { id: role_id } });
+      const menuList = await roleMenuServices.findAll({ where: { role_id } });
+      ruleInfo.menuIds = menuList.map((item) => item.menu_id);
+      ctx.body = { code: 20000, data: { ruleInfo } };
     } catch (error) {
       ctx.app.emit('error', ctx);
-
       log4jsError(error);
     }
   },

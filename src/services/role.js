@@ -50,4 +50,14 @@ export default {
 
     return res.map((item) => item.dataValues);
   },
+  /**
+   * @method findOne
+   * @param {object} data
+   * @returns
+   */
+  findOne: async ({ where } = {}) => {
+    const options = { where };
+    const res = await roleModel.findOne(options);
+    return res?.dataValues || null;
+  },
 };
