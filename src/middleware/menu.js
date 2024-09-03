@@ -17,15 +17,15 @@ export default {
           type,
           layout,
           hidden,
-          alwaysShow,
+          show,
           title,
           icon,
           path,
-          noCache,
+          cache,
           affix,
           breadcrumb,
-          activeMenu,
-          isAuth,
+          active_menu,
+          auth,
           buttonPermissions = [],
         } = ctx.request.body;
 
@@ -34,42 +34,42 @@ export default {
         if (type === 0) {
           result = joi
             .object({
-              type: joi.number().required(),
+              type: joi.number().strict().required(),
               layout: joi.string().required(),
               hidden: joi.boolean().required(),
-              alwaysShow: joi.boolean().required(),
+              show: joi.boolean().required(),
               title: joi.string().required(),
               icon: joi.string().required(),
-              isAuth: joi.boolean().required(),
+              auth: joi.boolean().required(),
             })
             .validate({
               type,
               layout,
               hidden,
-              alwaysShow,
+              show,
               title,
               icon,
-              isAuth,
+              auth,
             });
         } else if (type === 1) {
           result = joi
             .object({
-              type: joi.number().required(),
+              type: joi.number().strict().required(),
               hidden: joi.boolean().required(),
               title: joi.string().required(),
               path: joi.string().required(),
               icon: joi.string().required(),
-              noCache: joi.boolean().required(),
+              cache: joi.boolean().required(),
               affix: joi.boolean().required(),
               breadcrumb: joi.boolean().required(),
-              activeMenu: joi.string().allow('').required(),
-              isAuth: joi.boolean().required(),
+              active_menu: joi.string().allow('').required(),
+              auth: joi.boolean().required(),
               buttonPermissions: joi
                 .array()
                 .items(
                   joi.object({
                     label: joi.string().required(),
-                    value: joi.number().required(),
+                    value: joi.number().strict().required(),
                   })
                 )
                 .empty(),
@@ -80,11 +80,11 @@ export default {
               title,
               path,
               icon,
-              noCache,
+              cache,
               affix,
               breadcrumb,
-              activeMenu,
-              isAuth,
+              active_menu,
+              auth,
               buttonPermissions,
             });
         }
@@ -108,7 +108,7 @@ export default {
     },
 
     /**
-     * @method isUserExist
+     * @method isMenuExist
      * @param {*} ctx
      * @param {*} next
      */
@@ -156,9 +156,9 @@ export default {
           .array()
           .items(
             joi.object({
-              id: joi.number().required(),
-              sortIndex: joi.number().required(),
-              parentId: joi.number().required(),
+              id: joi.number().strict().required(),
+              sortIndex: joi.number().strict().required(),
+              parentId: joi.number().strict().required(),
             })
           )
           .validate(
@@ -216,8 +216,8 @@ export default {
         if (type === 0) {
           error = joi
             .object({
-              id: joi.number().required(),
-              type: joi.number().required(),
+              id: joi.number().strict().required(),
+              type: joi.number().strict().required(),
               layout: joi.string().required(),
               hidden: joi.boolean().required(),
               alwaysShow: joi.boolean().required(),
@@ -238,8 +238,8 @@ export default {
         } else if (type === 1) {
           joi
             .object({
-              id: joi.number().required(),
-              type: joi.number().required(),
+              id: joi.number().strict().required(),
+              type: joi.number().strict().required(),
               hidden: joi.boolean().required(),
               title: joi.string().required(),
               path: joi.string().required(),
@@ -254,7 +254,7 @@ export default {
                 .items(
                   joi.object({
                     label: joi.string().required(),
-                    value: joi.number().required(),
+                    value: joi.number().strict().required(),
                   })
                 )
                 .empty(),

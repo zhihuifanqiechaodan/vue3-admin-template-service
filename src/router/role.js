@@ -11,7 +11,7 @@ router
    * 获取角色列表
    * 认证、获取角色列表
    */
-  .get('/list', authMiddleware.auth, roleControllers.roleList)
+  .get('/list', authMiddleware.auth, roleControllers.getRoleList)
   /**
    * 获取角色详情
    * 认证、获取角色详情
