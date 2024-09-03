@@ -19,17 +19,12 @@ export default {
   },
 
   /**
-   * @method createUser
+   * @method create
    * @param {object} options
-   * @param {string} options.username
-   * @param {string} options.password
-   * @param {string} options.roleId
-   * @param {string} options.creatorUserId
-   * @param {string} options.updateUserId
    * @returns
    */
-  createUser: async ({ username, password, roleId, creatorUserId, updateUserId }) => {
-    const res = await userModel.create({ username, password, roleId, creatorUserId, updateUserId });
+  create: async (options) => {
+    const res = await userModel.create(options);
 
     return res.dataValues;
   },

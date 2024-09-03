@@ -20,7 +20,7 @@ export default {
 
         const hash = bcrypt.hashSync(password, salt);
 
-        const { id } = await userServices.createUser({ username, password: hash });
+        const { id } = await userServices.create({ username, password: hash });
 
         const { id: roleId } = await roleServices.createRole({
           name: '超级管理员',
@@ -28,7 +28,7 @@ export default {
           creator_id: id,
         });
 
-        await userServices.updateUser({ where: { username }, update: { roleId } });
+        await userServices.updateUser({ where: { id }, update: { roleId } });
       }
     } catch (error) {
       log4jsError(error);

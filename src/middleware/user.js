@@ -37,21 +37,15 @@ export default {
      */
     validateField: async (ctx, next) => {
       try {
-        const { username, password } = ctx.request.body;
+        const { username, password, role_id } = ctx.request.body;
 
         const schema = joi.object({
           username: joi.string().alphanum().min(3).max(30).required(),
-          password: joi
-            .string()
-            .pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,30}$'))
-            .required()
-            .messages({
-              'string.pattern.base':
-                'Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character.',
-            }),
+          password: joi.string().required(),
+          role_id: joi.number().required(),
         });
 
-        const result = schema.validate({ username, password });
+        const result = schema.validate({ username, password, role_id });
 
         if (result.error) {
           ctx.body = {
@@ -213,6 +207,41 @@ export default {
             message: '当前用户已经被禁用',
           };
 
+          return;
+        }
+      } catch (error) {
+        ctx.app.emit('error', ctx);
+
+        log4jsError(error);
+
+        return;
+      }
+
+      await next();
+    },
+  },
+  'change-password': {
+    /**
+     * @method validateField
+     * @param {*} ctx
+     * @param {*} next
+     * @returns
+     */
+    validateField: async (ctx, next) => {
+      try {
+        const { password } = ctx.request.body;
+
+        const schema = joi.object({
+          password: joi.string().required(),
+        });
+
+        const result = schema.validate({ password });
+
+        if (result.error) {
+          ctx.body = {
+            code: 40000,
+            message: result.error.message,
+          };
           return;
         }
       } catch (error) {
